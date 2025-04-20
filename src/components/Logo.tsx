@@ -8,32 +8,32 @@ interface LogoProps {
 const Logo: React.FC<LogoProps> = ({ className }) => {
   return (
     <div className={`flex items-center gap-2 ${className}`}>
-      <div className="h-8 w-8 flex items-center justify-center bg-acuveda-blue rounded-md">
+      <div className="h-10 w-10 rounded-lg bg-acuveda-blue flex items-center justify-center">
         <svg 
-          width="20" 
-          height="20" 
+          width="24" 
+          height="24" 
           viewBox="0 0 24 24" 
           fill="none" 
           xmlns="http://www.w3.org/2000/svg"
         >
           <path 
-            d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3Z" 
-            stroke="white" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
+            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" 
+            fill="white"
           />
           <path 
-            d="M8.5 10C9.32843 10 10 9.32843 10 8.5C10 7.67157 9.32843 7 8.5 7C7.67157 7 7 7.67157 7 8.5C7 9.32843 7.67157 10 8.5 10Z" 
+            d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z" 
+            fill="white"
+          />
+          <path 
+            d="M12 15c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm0-4c-0.55 0-1 0.45-1 1s0.45 1 1 1 1-0.45 1-1-0.45-1-1-1z" 
+            fill="acuveda-blue"
+          />
+          <circle 
+            cx="12" 
+            cy="12" 
+            r="2" 
             fill="white" 
-            stroke="white" 
-          />
-          <path 
-            d="M21 15L16 10L5 21" 
-            stroke="white" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
+            opacity="0.5"
           />
         </svg>
       </div>
@@ -45,3 +45,4 @@ const Logo: React.FC<LogoProps> = ({ className }) => {
 };
 
 export default Logo;
+
