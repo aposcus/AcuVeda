@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 
 /**
@@ -64,7 +63,7 @@ const ChatbotSettings: React.FC = () => {
                 <>
                   <span className="flex-1">{r.question}</span>
                   <span className="flex-1 text-gray-700">{r.answer}</span>
-                  <Button onClick={() => setEditIdx(idx)} size="xs" className="ml-2">
+                  <Button onClick={() => setEditIdx(idx)} size="sm" className="ml-2">
                     Edit
                   </Button>
                 </>

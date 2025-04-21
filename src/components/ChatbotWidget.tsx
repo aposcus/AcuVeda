@@ -1,314 +1,163 @@
-import React, { useRef, useState, useEffect } from "react";
-import { MessageSquare, Sun, Moon } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/useAuth";
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { toast } from "@/hooks/use-toast";
+import { X, MessageCircle } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
-const DEFAULT_RESPONSES: { [key: string]: string } = {
-  "high hemoglobin": "High hemoglobin might mean dehydration or other conditions. Drink water and talk to your doctor.",
-  "low glucose": "Low blood sugar can make you feel dizzy or tired. Have a snack and let your doctor know.",
-  "high cholesterol": "High cholesterol could be due to diet or genetics. Try eating less fried food and consult your doctor.",
-  "high blood sugar": "High blood sugar means your body has trouble managing sugar levels. Try to eat balanced meals and see your doctor.",
-  "high blood pressure": "High blood pressure can increase risks. Monitor regularly and consult your doctor if it stays high.",
-  "default": "Sorry, I didn’t understand. Try asking about something like ‘high cholesterol’ or ‘low glucose.’",
-  "not_health": "I can only answer health-related questions. Try asking about your blood report!"
-};
-const DISCLAIMER = "This is general information. Consult a doctor for medical advice.";
-
-const chatStyleLight =
-  "bg-white text-black border border-gray-200 shadow-lg rounded-lg";
-const chatStyleDark =
-  "bg-black text-white border border-gray-700 shadow-lg rounded-lg";
-
-const getDisplayDate = (dateStr?: string | null) => {
-  if (!dateStr) return "";
-  try {
-    return new Date(dateStr).toLocaleDateString();
-  } catch {
-    return "";
-  }
-};
-
-const extractSimpleIntent = (q: string) => {
-  const s = q.toLowerCase();
-  if (/weather|rain|forecast|temperature/.test(s)) return "not_health";
-  if (/high hemoglobin/.test(s)) return "high hemoglobin";
-  if (/low glucose|low blood sugar/.test(s)) return "low glucose";
-  if (/high cholesterol/.test(s)) return "high cholesterol";
-  if (/high blood sugar|high glucose/.test(s)) return "high blood sugar";
-  if (/high blood pressure|bp/.test(s)) return "high blood pressure";
-  if (/hemoglobin.*normal/.test(s)) return "hemoglobin_normal_q";
-  if (/blood pressure.*high/.test(s)) return "bp_is_high";
-  // fallback
-  return "";
-};
-
-const isVoiceSupported = !!window.SpeechRecognition || !!window.webkitSpeechRecognition;
-
-type Props = {
-  className?: string;
-  chatStyle?: string;
-  disclaimerOverride?: string;
-  responseTemplates?: { [intent: string]: string };
-};
-
-const ChatbotWidget: React.FC<Props> = ({
-  chatStyle = "light",
-  disclaimerOverride,
-  responseTemplates
-}) => {
+const ChatbotWidget = () => {
   const [open, setOpen] = useState(false);
-  const [input, setInput] = useState("");
-  const [highContrast, setHighContrast] = useState(false);
-  const [messages, setMessages] = useState<
-    { role: "user" | "bot"; text: string; disclaimer?: string }[]
-  >([]);
+  const [chatHistory, setChatHistory] = useState<{user: string; bot: string;}[]>([]);
+  const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const { user } = useAuth();
-  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (open) setTimeout(() => inputRef.current?.focus(), 400);
+    if (open) {
+      inputRef.current?.focus();
+    }
   }, [open]);
-
-  const handleInputKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !loading) handleSend();
-    if (e.key === "Escape") setOpen(false);
-  };
-
-  const fetchLatestBloodReport = async () => {
-    if (!user) return null;
-    const { data, error } = await supabase
-      .from("blood_reports")
-      .select(
-        "date, hemoglobin, cholesterol, glucose, blood_pressure"
-      )
-      .eq("user_id", user.id)
-      .order("date", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-    if (error) return null;
-    return data;
-  };
-
-  const storeChatLog = async (question: string, response: string) => {
-    if (!user) return;
-    await supabase.from("chat_logs").insert({
-      user_id: user.id,
-      user_question: question,
-      chatbot_response: response
-    });
-  };
-
-  const generateBotResponse = async (prompt: string): Promise<string> => {
-    const latest = await fetchLatestBloodReport();
-    let intent = extractSimpleIntent(prompt);
-    const rTemplates = responseTemplates || DEFAULT_RESPONSES;
-    if (intent === "hemoglobin_normal_q" && latest) {
-      let val = latest.hemoglobin;
-      if (typeof val === "number") {
-        let msg = `Your latest report shows hemoglobin at ${val} g/dL${latest.date ? ` (as of ${getDisplayDate(latest.date)})` : ""}, `;
-        msg += val < 13 ? "which is low." : val > 17 ? "which is high." : "which is normal.";
-        return `${msg} Consult your doctor for personalized advice.`;
-      }
-    }
-    if (intent === "bp_is_high" && latest?.blood_pressure) {
-      let bp = latest.blood_pressure;
-      let msg = `Your latest blood pressure reading was ${bp}.`;
-      msg += /1\d{2,3}\/\d{2,3}/.test(bp) && parseInt(bp.split('/')[0]) > 129 ? " This is a little higher than ideal, but still safe." : " This is normal.";
-      return msg;
-    }
-    let answer = "";
-    if (intent && rTemplates[intent]) {
-      answer = rTemplates[intent];
-    } else if (intent === "") {
-      answer = rTemplates["default"];
-    } else {
-      answer = rTemplates[intent] || rTemplates["default"];
-    }
-    return answer;
-  };
 
   const handleSend = async () => {
     if (!input.trim()) return;
     setLoading(true);
-    const userMsg = input.trim();
-    setMessages((prev) => [
-      ...prev,
-      { role: "user", text: userMsg }
-    ]);
-    setInput("");
-    let response = "";
+
+    setChatHistory((prev) => [...prev, { user: input, bot: '' }]);
+
     try {
-      response = await generateBotResponse(userMsg);
-      if (!response) {
-        response =
-          "I don’t have your latest report. Generally, high hemoglobin might mean dehydration. Consult your doctor.";
+      if (!user?.id) {
+        throw new Error("User not logged in");
       }
-    } catch (e) {
-      response =
-        "Oops, something went wrong. Please try again or contact support.";
+
+      const { data: chatLog, error } = await supabase
+        .from('chat_logs')
+        .insert([
+          {
+            user_id: user.id,
+            user_question: input,
+            chatbot_response: '...', // Initial loading state
+          },
+        ])
+        .select()
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      // Simulate AI response logic and add disclaimer
+      const botReply = `This is a simulated response. For medical advice, consult a doctor.`;
+
+      // After getting the response (e.g., botReply):
+      setChatHistory((prev) => [...prev, { user: input, bot: botReply }]);
+
+      // Update the chat log with the chatbot response
+      await supabase
+        .from('chat_logs')
+        .update({ chatbot_response: botReply })
+        .eq('id', chatLog.id);
+
+    } catch (err: any) {
+      console.error("Error sending message:", err.message);
+      setChatHistory((prev) => [...prev, { user: 'Error', bot: 'Failed to get response.' }]);
     }
-    setMessages((prev) => [
-      ...prev,
-      { role: "bot", text: response, disclaimer: disclaimerOverride || DISCLAIMER }
-    ]);
-    if (user) {
-      storeChatLog(userMsg, response + " " + (disclaimerOverride || DISCLAIMER));
-    }
+
+    setInput('');
     setLoading(false);
+    inputRef.current?.focus();
   };
 
-  const handleClear = () => {
-    setMessages([]);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !loading) handleSend();
   };
 
-  const widgetBtnStyle =
-    "fixed z-50 bottom-5 right-5 rounded-full bg-acuveda-blue hover:bg-acuveda-blue/90 text-white p-4 shadow-lg focus:outline-acuveda-blue";
+  const handleClear = () => setChatHistory([]);
 
   return (
     <>
       <button
-        className={widgetBtnStyle}
-        aria-label={open ? "Close health chatbot" : "Open health chatbot"}
-        onClick={() => setOpen((v) => !v)}
+        aria-label="Open chatbot"
+        className="fixed bottom-6 right-6 z-50 bg-acuveda-blue rounded-full p-4 shadow-lg focus:outline-none focus:ring-2 focus:ring-ring"
+        onClick={() => setOpen(true)}
         tabIndex={0}
-        style={{ fontSize: 0 }}
       >
-        <MessageSquare className="w-7 h-7" aria-hidden="true" />
+        <MessageCircle className="text-white" size={32} />
       </button>
+
       {open && (
         <div
-          className={`fixed z-[60] bottom-24 right-5 w-[320px] max-w-[95vw] h-[430px] rounded-lg ${
-            highContrast ? "bg-black text-white border-white" : chatStyle === "dark" ? chatStyleDark : chatStyleLight
-          } flex flex-col shadow-2xl outline-none select-none`}
+          className="fixed bottom-6 right-6 z-50 w-[320px] h-[420px] bg-white rounded-lg shadow-2xl flex flex-col"
           role="dialog"
           aria-modal="true"
-          tabIndex={-1}
+          aria-label="Chatbot window"
         >
-          <div className="flex items-center justify-between px-4 py-2 border-b">
-            <div className="text-lg font-bold">AcuVeda Health Chatbot</div>
-            <div className="flex items-center gap-2">
-              <Button
-                onClick={() => setHighContrast((v) => !v)}
-                aria-label={highContrast ? "Switch to normal contrast" : "Switch to high contrast mode"}
-                size="icon"
-                variant="ghost"
-              >
-                {highContrast ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-              </Button>
-              <Button
-                onClick={() => setOpen(false)}
-                aria-label="Close chat"
-                size="icon"
-                variant="ghost"
-              >
-                ×
-              </Button>
-            </div>
+          <div className="flex items-center justify-between px-4 py-2 border-b bg-acuveda-blue rounded-t-lg">
+            <span className="text-white text-xl font-bold">AcuVeda Chatbot</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              aria-label="Close chatbot"
+              onClick={() => setOpen(false)}
+            >
+              <X />
+            </Button>
           </div>
-          <div
-            className="flex-1 overflow-y-auto p-3"
-            style={{ fontSize: "16px" }}
-            aria-live="polite"
-            aria-atomic="false"
-          >
-            {messages.length === 0 && (
-              <div className="text-sm text-muted-foreground mt-8 text-center">
-                Ask me about your blood report, like:
-                <div>
-                  <em className="block mt-2">
-                    "What does high hemoglobin mean?"<br />
-                    "Is my blood pressure normal?"<br />
-                    "How can I lower cholesterol?"
-                  </em>
-                </div>
+          <div className="flex-1 overflow-y-auto px-4 py-2 space-y-3 bg-white"
+            style={{ fontSize: '16px' }}>
+            {chatHistory.length === 0 ? (
+              <div className="text-center text-muted-foreground pt-16">
+                <span className="text-lg">Ask about your health…</span>
               </div>
-            )}
-            {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`mb-4 flex flex-col items-${msg.role === "user" ? "end" : "start"}`}
-                aria-label={msg.role === "user" ? "User message" : "Bot response"}
-              >
-                <div
-                  className={`px-3 py-2 rounded-[18px] ${msg.role === "user"
-                    ? "bg-acuveda-blue text-white self-end"
-                    : highContrast
-                    ? "bg-gray-800 text-white"
-                    : "bg-gray-100 text-black"
-                    } max-w-[85%]`}
-                >
-                  {msg.text}
-                </div>
-                {msg.role === "bot" && (
-                  <div
-                    className="text-xs italic mt-0.5"
-                    style={{
-                      fontSize: "12px",
-                      color: highContrast ? "#d1d5db" : "#555"
-                    }}
-                  >
-                    {msg.disclaimer}
+            ) : (
+              chatHistory.map((entry, i) => (
+                <div key={i} className="mb-4">
+                  <div>
+                    <span className="font-semibold text-acuveda-blue">You: </span>
+                    <span>{entry.user}</span>
                   </div>
-                )}
-              </div>
-            ))}
+                  {entry.bot && (
+                    <div className="mt-2 px-3 py-2 rounded bg-gray-100">
+                      <span className="block text-black">{entry.bot}</span>
+                      <span className="block italic text-xs text-gray-500 mt-2" style={{ fontSize: '12px' }}>
+                        This is general information. Consult a doctor for medical advice.
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
           </div>
-          <form
-            className="flex items-center gap-1 px-3 py-2 border-t"
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSend();
-            }}
-            aria-label="Chatbot input area"
-          >
+          <div className="px-4 py-2 border-t bg-white flex items-center gap-2">
             <input
-              aria-label="Chatbot input field"
-              placeholder="Ask about your health…"
-              className={`flex-1 px-3 py-2 rounded border ${
-                highContrast
-                  ? "bg-gray-900 text-white border-white"
-                  : "bg-white text-black border-gray-300"
-              } outline-none focus:ring focus:ring-acuveda-blue text-base`}
               ref={inputRef}
-              tabIndex={0}
-              type="text"
               value={input}
-              disabled={loading}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleInputKeyDown}
-              autoComplete="off"
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Ask about your health…"
+              aria-label="Chatbot input field"
+              className="flex-1 border border-gray-300 rounded px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-acuveda-blue"
+              style={{ fontSize: '16px' }}
+              tabIndex={0}
             />
             <Button
-              type="submit"
-              className="ml-1 bg-acuveda-blue hover:bg-acuveda-blue/90 text-white"
-              size="sm"
+              onClick={handleSend}
               disabled={loading || !input.trim()}
-              aria-label="Send"
-              tabIndex={0}
+              variant="default"
+              size="sm"
+              aria-label="Send message"
+              className="h-10 px-4"
             >
               Send
             </Button>
-          </form>
-          <div className="flex items-center justify-between px-4 py-2 border-t bg-gray-50">
             <Button
-              variant="outline"
-              size="xs"
               onClick={handleClear}
+              variant="outline"
+              size="sm"
               aria-label="Clear chat"
+              className="h-10 ml-1"
             >
               Clear Chat
             </Button>
-            <a
-              href="/dashboard/chat-history"
-              className="text-sm text-acuveda-blue underline ml-2"
-              aria-label="View chat history"
-            >
-              Chat History
-            </a>
           </div>
         </div>
       )}
