@@ -9,6 +9,63 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      blood_reports: {
+        Row: {
+          blood_pressure: string | null
+          cholesterol: number | null
+          created_at: string
+          date: string
+          glucose: number | null
+          hemoglobin: number | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          blood_pressure?: string | null
+          cholesterol?: number | null
+          created_at?: string
+          date: string
+          glucose?: number | null
+          hemoglobin?: number | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          blood_pressure?: string | null
+          cholesterol?: number | null
+          created_at?: string
+          date?: string
+          glucose?: number | null
+          hemoglobin?: number | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      chat_logs: {
+        Row: {
+          chatbot_response: string
+          id: string
+          timestamp: string
+          user_id: string
+          user_question: string
+        }
+        Insert: {
+          chatbot_response: string
+          id?: string
+          timestamp?: string
+          user_id: string
+          user_question: string
+        }
+        Update: {
+          chatbot_response?: string
+          id?: string
+          timestamp?: string
+          user_id?: string
+          user_question?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           age: number | null
