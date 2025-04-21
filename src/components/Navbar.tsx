@@ -65,6 +65,14 @@ const Navbar = () => {
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
+            {/* LIFESTYLE DATA FEATURE */}
+            <NavigationMenuItem>
+              <Link to="/lifestyle">
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Lifestyle
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
 
