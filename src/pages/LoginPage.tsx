@@ -1,26 +1,64 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LogIn, User } from 'lucide-react';
 import Logo from '@/components/Logo';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "@/components/ui/use-toast";
 
 const LoginPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const { user, loading, signInWithEmail, signUpWithEmail } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && user) {
+      navigate("/dashboard");
+    }
+  }, [user, loading, navigate]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(isLogin ? 'Login attempted' : 'Registration attempted', { email, password, name });
-    // In a real app, this would connect to Supabase or another auth provider
-    // and handle login/registration logic
+    setFormError(null);
+    setSubmitting(true);
+    try {
+      if (isLogin) {
+        // Login
+        const { error } = await signInWithEmail(email, password);
+        if (error) {
+          setFormError(error.message || "Login failed. Please try again.");
+          toast({ title: "Login failed", description: error.message, variant: "destructive" });
+        } else {
+          toast({ title: "Logged in!", description: "Welcome back!" });
+        }
+      } else {
+        // Sign up
+        const { error } = await signUpWithEmail(email, password);
+        if (error) {
+          setFormError(error.message || "Signup failed. Please try again.");
+          toast({ title: "Signup failed", description: error.message, variant: "destructive" });
+        } else {
+          toast({ title: "Account created!", description: "Check your email for confirmation (if required)" });
+        }
+      }
+    } catch (err: any) {
+      setFormError(err.message || "Unexpected error occured.");
+      toast({ title: "Error", description: err.message, variant: "destructive" });
+    } finally {
+      setSubmitting(false);
+    }
   };
-  
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-acuveda-light flex items-center justify-center py-12 px-4">
       <Card className="w-full max-w-md">
@@ -47,11 +85,11 @@ const LoginPage = () => {
                   placeholder="Enter your name" 
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  required
+                  autoComplete="name"
+                  // Not used for backend yet
                 />
               </div>
             )}
-            
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input 
@@ -61,9 +99,10 @@ const LoginPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                autoComplete="email"
+                disabled={submitting}
               />
             </div>
-            
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
@@ -80,22 +119,27 @@ const LoginPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                autoComplete={isLogin ? "current-password" : "new-password"}
+                disabled={submitting}
               />
             </div>
-            
+            {formError && (
+              <div className="text-red-600 text-sm mt-2 text-center">{formError}</div>
+            )}
             <Button 
               type="submit" 
               className="w-full bg-acuveda-blue hover:bg-acuveda-blue/90 flex items-center justify-center gap-2"
+              disabled={submitting}
             >
               {isLogin ? (
                 <>
                   <LogIn size={18} />
-                  Login
+                  {submitting ? "Logging in..." : "Login"}
                 </>
               ) : (
                 <>
                   <User size={18} />
-                  Create Account
+                  {submitting ? "Creating..." : "Create Account"}
                 </>
               )}
             </Button>
