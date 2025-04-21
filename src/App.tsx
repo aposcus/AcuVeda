@@ -4,8 +4,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "@/components/Navbar";
-
-// Pages
 import Home from "./pages/Home";
 import CheckupPage from "./pages/CheckupPage";
 import FeaturesPage from "./pages/FeaturesPage";
@@ -14,6 +12,7 @@ import LoginPage from "./pages/LoginPage";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ProfilePage from "./pages/ProfilePage";
+import HealthGoalsPage from "@/pages/HealthGoalsPage";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +33,7 @@ const App = () => (
               <Route path="/about" element={<AboutPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/health-goals" element={<HealthGoalsPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

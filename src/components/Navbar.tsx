@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
+import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { Button } from './ui/button';
 import { User, LogIn, LogOut } from 'lucide-react';
 import { useAuth } from "@/hooks/useAuth";
@@ -54,6 +54,14 @@ const Navbar = () => {
               <Link to="/about">
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   About Us
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+            {/* ADDED HEALTH GOAL TRACKING */}
+            <NavigationMenuItem>
+              <Link to="/health-goals">
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Health Goal Tracking
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
