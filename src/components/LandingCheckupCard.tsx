@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,6 +8,7 @@ interface StatDetail {
   value: number;
   unit: string;
   normal: [number, number];
+  state?: "normal" | "increased" | "decreased";
 }
 
 interface LandingCheckupCardProps {
@@ -90,18 +90,17 @@ const LandingCheckupCard: React.FC<LandingCheckupCardProps> = ({
               ]
         });
       } else if (type === "RECORD") {
-        // Mimic stats and highlight increases/decreases
         setReport({
           assessment: Math.random() > 0.5 ? "Abnormal values found." : "All values within reference.",
-          stats: EXAMPLES_RECORD_STATS.map(stat => ({
-            ...stat,
-            state:
+          stats: EXAMPLES_RECORD_STATS.map(stat => {
+            let state: "normal" | "increased" | "decreased" =
               stat.value < stat.normal[0]
                 ? "decreased"
                 : stat.value > stat.normal[1]
                 ? "increased"
-                : "normal"
-          })),
+                : "normal";
+            return { ...stat, state };
+          }),
           notes:
             Math.random() > 0.5
               ? "Consult doctor for abnormal values, especially high leukocytes and cholesterol."

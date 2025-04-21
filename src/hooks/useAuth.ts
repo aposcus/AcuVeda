@@ -32,10 +32,17 @@ export function useAuth() {
     };
   }, []);
 
-  const signUpWithEmail = async (email: string, password: string) => {
+  /**
+   * Signs up with email, password and full name
+   */
+  const signUpWithEmail = async (email: string, password: string, fullName?: string) => {
     return supabase.auth.signUp({
       email,
       password,
+      options: {
+        // full_name is added as user_metadata, used in trigger to create profiles row
+        data: fullName ? { full_name: fullName } : {},
+      },
     });
   };
 
