@@ -23,7 +23,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (!loading && user) {
-      navigate("/dashboard");
+      navigate("/"); // Redirect to home page instead of dashboard after login/signup
     }
   }, [user, loading, navigate]);
 
@@ -33,7 +33,6 @@ const LoginPage = () => {
     setSubmitting(true);
     try {
       if (isLogin) {
-        // Login
         const { error } = await signInWithEmail(email, password);
         if (error) {
           setFormError(error.message || "Login failed. Please try again.");
@@ -42,8 +41,7 @@ const LoginPage = () => {
           toast({ title: "Logged in!", description: "Welcome back!" });
         }
       } else {
-        // Sign up
-        const { error } = await signUpWithEmail(email, password);
+        const { error } = await signUpWithEmail(email, password, name);
         if (error) {
           setFormError(error.message || "Signup failed. Please try again.");
           toast({ title: "Signup failed", description: error.message, variant: "destructive" });
@@ -68,8 +66,8 @@ const LoginPage = () => {
           </div>
           <CardTitle className="text-2xl">{isLogin ? 'Login to Your Account' : 'Create an Account'}</CardTitle>
           <CardDescription>
-            {isLogin 
-              ? 'Enter your credentials to access your account' 
+            {isLogin
+              ? 'Enter your credentials to access your account'
               : 'Sign up to start using AcuVeda health monitoring'
             }
           </CardDescription>
@@ -79,23 +77,22 @@ const LoginPage = () => {
             {!isLogin && (
               <div className="space-y-2">
                 <Label htmlFor="name">Full Name</Label>
-                <Input 
-                  id="name" 
-                  type="text" 
-                  placeholder="Enter your name" 
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Enter your name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   autoComplete="name"
-                  // Not used for backend yet
                 />
               </div>
             )}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input 
-                id="email" 
-                type="email" 
-                placeholder="your@email.com" 
+              <Input
+                id="email"
+                type="email"
+                placeholder="your@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -112,10 +109,10 @@ const LoginPage = () => {
                   </Link>
                 )}
               </div>
-              <Input 
-                id="password" 
-                type="password" 
-                placeholder="••••••••" 
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -126,8 +123,8 @@ const LoginPage = () => {
             {formError && (
               <div className="text-red-600 text-sm mt-2 text-center">{formError}</div>
             )}
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className="w-full bg-acuveda-blue hover:bg-acuveda-blue/90 flex items-center justify-center gap-2"
               disabled={submitting}
             >
@@ -148,8 +145,8 @@ const LoginPage = () => {
         <CardFooter className="flex flex-col">
           <div className="text-sm text-center text-gray-600">
             {isLogin ? "Don't have an account?" : "Already have an account?"}
-            <button 
-              onClick={() => setIsLogin(!isLogin)} 
+            <button
+              onClick={() => setIsLogin(!isLogin)}
               className="text-acuveda-blue hover:underline ml-1"
             >
               {isLogin ? 'Sign up' : 'Login'}
