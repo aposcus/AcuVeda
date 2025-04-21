@@ -48,17 +48,72 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight;
+  }
 }
 
-.card-glow {
-  @apply shadow-md hover:shadow-lg transition-all duration-300 hover:shadow-acuveda-blue/20;
+@layer components {
+  .card-glow {
+    @apply shadow-md hover:shadow-lg transition-all duration-300 hover:shadow-acuveda-blue/20;
+  }
+
+  .upload-area {
+    @apply border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center transition-all duration-200 
+    border-acuveda-blue/30 hover:border-acuveda-blue cursor-pointer bg-acuveda-light;
+  }
+
+  .results-card {
+    @apply bg-white rounded-lg p-6 shadow-md border border-gray-100;
+  }
+  
+  .fade-in {
+    @apply animate-[fadeIn_0.5s_ease-in-out];
+  }
+  
+  .btn-primary {
+    @apply bg-acuveda-blue text-white hover:bg-acuveda-blue/90 transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply bg-acuveda-teal text-white hover:bg-acuveda-teal/90 transition-colors;
+  }
+  
+  .btn-outline {
+    @apply border border-acuveda-blue text-acuveda-blue hover:bg-acuveda-blue/10 transition-colors;
+  }
 }
 
-.upload-area {
-  @apply border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center transition-all duration-200 
-  border-acuveda-blue/30 hover:border-acuveda-blue cursor-pointer bg-acuveda-light;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.results-card {
-  @apply bg-white rounded-lg p-6 shadow-md border border-gray-100;
+.link-underline {
+  position: relative;
+}
+
+.link-underline:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: currentColor;
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
+}
+
+.link-underline:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
