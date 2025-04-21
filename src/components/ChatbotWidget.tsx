@@ -1,6 +1,5 @@
-
 import React, { useRef, useState, useEffect } from "react";
-import { MessageSquare, Mic, Sun, Moon } from "lucide-react";
+import { MessageSquare, Sun, Moon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -47,7 +46,6 @@ const extractSimpleIntent = (q: string) => {
 
 const isVoiceSupported = !!window.SpeechRecognition || !!window.webkitSpeechRecognition;
 
-// Props to be extended for customization:
 type Props = {
   className?: string;
   chatStyle?: string;
@@ -67,50 +65,19 @@ const ChatbotWidget: React.FC<Props> = ({
     { role: "user" | "bot"; text: string; disclaimer?: string }[]
   >([]);
   const [loading, setLoading] = useState(false);
-  const [isVoice, setIsVoice] = useState(false);
 
   const { user } = useAuth();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Voice input
-  const recognitionRef = useRef<any>(null);
-
-  useEffect(() => {
-    if (!isVoice) return;
-    let SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SpeechRecognition) return;
-    const recognition = new SpeechRecognition();
-    recognition.lang = "en-US";
-    recognition.continuous = false;
-    recognition.interimResults = false;
-
-    recognition.onresult = (event: any) => {
-      let transcript = event.results[0][0].transcript;
-      setInput(transcript);
-      setIsVoice(false);
-      inputRef.current?.focus();
-    };
-    recognition.onerror = () => {
-      setIsVoice(false);
-      toast({ title: "Voice input error", description: "Could not recognize speech." });
-    };
-    recognitionRef.current = recognition;
-    recognition.start();
-    return () => recognition.stop();
-  }, [isVoice]);
-
-  // Focus input when opening chat
   useEffect(() => {
     if (open) setTimeout(() => inputRef.current?.focus(), 400);
   }, [open]);
 
-  // Accessibility: handle Enter to send, ESC to close, Tab focus, etc.
   const handleInputKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !loading) handleSend();
     if (e.key === "Escape") setOpen(false);
   };
 
-  // Fetch latest blood data for personalizing responses
   const fetchLatestBloodReport = async () => {
     if (!user) return null;
     const { data, error } = await supabase
@@ -126,7 +93,6 @@ const ChatbotWidget: React.FC<Props> = ({
     return data;
   };
 
-  // Store chat log to Supabase
   const storeChatLog = async (question: string, response: string) => {
     if (!user) return;
     await supabase.from("chat_logs").insert({
@@ -136,13 +102,10 @@ const ChatbotWidget: React.FC<Props> = ({
     });
   };
 
-  // Generate a response (rule-based/templated w/ optional user data)
   const generateBotResponse = async (prompt: string): Promise<string> => {
-    // Check if question is about the user's own blood report
     const latest = await fetchLatestBloodReport();
     let intent = extractSimpleIntent(prompt);
     const rTemplates = responseTemplates || DEFAULT_RESPONSES;
-    // Handle personalized checks
     if (intent === "hemoglobin_normal_q" && latest) {
       let val = latest.hemoglobin;
       if (typeof val === "number") {
@@ -157,12 +120,10 @@ const ChatbotWidget: React.FC<Props> = ({
       msg += /1\d{2,3}\/\d{2,3}/.test(bp) && parseInt(bp.split('/')[0]) > 129 ? " This is a little higher than ideal, but still safe." : " This is normal.";
       return msg;
     }
-    // Pre-defined or fallback generic
     let answer = "";
     if (intent && rTemplates[intent]) {
       answer = rTemplates[intent];
     } else if (intent === "") {
-      // If none matched, but still looks health related, use fallback
       answer = rTemplates["default"];
     } else {
       answer = rTemplates[intent] || rTemplates["default"];
@@ -182,7 +143,6 @@ const ChatbotWidget: React.FC<Props> = ({
     let response = "";
     try {
       response = await generateBotResponse(userMsg);
-      // If error with fetching user data -> fallback response
       if (!response) {
         response =
           "I don’t have your latest report. Generally, high hemoglobin might mean dehydration. Consult your doctor.";
@@ -196,7 +156,6 @@ const ChatbotWidget: React.FC<Props> = ({
       { role: "bot", text: response, disclaimer: disclaimerOverride || DISCLAIMER }
     ]);
     if (user) {
-      // Store chat log (ignore errors)
       storeChatLog(userMsg, response + " " + (disclaimerOverride || DISCLAIMER));
     }
     setLoading(false);
@@ -229,7 +188,6 @@ const ChatbotWidget: React.FC<Props> = ({
           aria-modal="true"
           tabIndex={-1}
         >
-          {/* Header */}
           <div className="flex items-center justify-between px-4 py-2 border-b">
             <div className="text-lg font-bold">AcuVeda Health Chatbot</div>
             <div className="flex items-center gap-2">
@@ -251,7 +209,6 @@ const ChatbotWidget: React.FC<Props> = ({
               </Button>
             </div>
           </div>
-          {/* Messages */}
           <div
             className="flex-1 overflow-y-auto p-3"
             style={{ fontSize: "16px" }}
@@ -300,7 +257,6 @@ const ChatbotWidget: React.FC<Props> = ({
               </div>
             ))}
           </div>
-          {/* Input */}
           <form
             className="flex items-center gap-1 px-3 py-2 border-t"
             onSubmit={(e) => {
@@ -326,20 +282,6 @@ const ChatbotWidget: React.FC<Props> = ({
               onKeyDown={handleInputKeyDown}
               autoComplete="off"
             />
-            {isVoiceSupported && (
-              <Button
-                type="button"
-                variant="secondary"
-                size="icon"
-                aria-label="Voice input"
-                onClick={() => setIsVoice(true)}
-                className="ml-1"
-                tabIndex={0}
-                disabled={isVoice}
-              >
-                <Mic className="w-5 h-5" />
-              </Button>
-            )}
             <Button
               type="submit"
               className="ml-1 bg-acuveda-blue hover:bg-acuveda-blue/90 text-white"
@@ -351,7 +293,6 @@ const ChatbotWidget: React.FC<Props> = ({
               Send
             </Button>
           </form>
-          {/* Footer (clear chat/history) */}
           <div className="flex items-center justify-between px-4 py-2 border-t bg-gray-50">
             <Button
               variant="outline"
