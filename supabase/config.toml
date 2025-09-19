@@ -23,3 +23,6 @@ verify_jwt = false
 
 [functions.auth-hook]
 verify_jwt = false
+
+[functions.malaria-detection]
+verify_jwt = false

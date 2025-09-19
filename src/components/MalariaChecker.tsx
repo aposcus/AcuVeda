@@ -1,6 +1,8 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import FileUploader from './FileUploader';
 import AnalysisResult from './AnalysisResult';
 
@@ -9,8 +11,9 @@ const MalariaChecker: React.FC = () => {
   const [analyzing, setAnalyzing] = useState(false);
   const [result, setResult] = useState<any | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const { toast } = useToast();
 
-  const handleFileSelect = (selectedFile: File) => {
+  const handleFileSelect = async (selectedFile: File) => {
     setFile(selectedFile);
     
     // Create a preview URL for the image
@@ -20,22 +23,60 @@ const MalariaChecker: React.FC = () => {
     // Reset previous results
     setResult(null);
     
-    // Simulate analysis process
+    // Start analysis
     setAnalyzing(true);
-    setTimeout(() => {
-      // In a real app, this would be an API call to a malaria detection model
-      const mockResult = {
-        disease: 'Malaria',
-        status: Math.random() > 0.5 ? 'positive' : 'negative',
-        confidence: 0.75 + Math.random() * 0.2,
-        details: Math.random() > 0.5 
-          ? 'Plasmodium parasites detected in blood smear. Recommended treatment: Consult with healthcare provider for appropriate antimalarial medication.'
-          : 'No parasites detected in blood sample. Normal blood cell morphology observed.',
+    
+    try {
+      // Convert file to base64 for the API
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const base64 = e.target?.result as string;
+        
+        try {
+          const { data, error } = await supabase.functions.invoke('malaria-detection', {
+            body: { imageUrl: base64 }
+          });
+
+          if (error) {
+            console.error('Supabase function error:', error);
+            throw new Error(error.message || 'Analysis failed');
+          }
+
+          setResult(data);
+          toast({
+            title: "Analysis Complete",
+            description: "Your blood smear has been analyzed.",
+          });
+        } catch (error) {
+          console.error('Analysis error:', error);
+          toast({
+            title: "Analysis Failed",
+            description: "Please try again or consult a healthcare professional.",
+            variant: "destructive"
+          });
+          
+          // Show error result
+          setResult({
+            disease: 'Malaria',
+            status: 'error',
+            confidence: 0,
+            details: 'Analysis failed. Please try again with a clearer image or consult a healthcare professional.'
+          });
+        } finally {
+          setAnalyzing(false);
+        }
       };
       
-      setResult(mockResult);
+      reader.readAsDataURL(selectedFile);
+    } catch (error) {
+      console.error('File reading error:', error);
       setAnalyzing(false);
-    }, 3000);
+      toast({
+        title: "File Error",
+        description: "Could not read the uploaded file.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleDownload = () => {
