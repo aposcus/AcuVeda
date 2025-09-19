@@ -74,6 +74,13 @@ const Navbar = () => {
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link to="/contact">
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  {t('nav.contact')}
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
 

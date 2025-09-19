@@ -16,6 +16,7 @@ import ProfilePage from "./pages/ProfilePage";
 import HealthGoalsPage from "@/pages/HealthGoalsPage";
 import LifestylePage from "./pages/LifestylePage";
 import ChatHistoryPage from "./pages/ChatHistoryPage";
+import ContactPage from "./pages/ContactPage";
 import ChatbotWidget from "@/components/ChatbotWidget";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/health-goals" element={<HealthGoalsPage />} />
                 <Route path="/lifestyle" element={<LifestylePage />} />
+                <Route path="/contact" element={<ContactPage />} />
                 <Route path="/dashboard/chat-history" element={<ChatHistoryPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

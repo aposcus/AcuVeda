@@ -9,6 +9,7 @@
     "profile": "Profile",
     "healthGoals": "Health Goals",
     "lifestyle": "Lifestyle",
+    "contact": "Contact",
     "chatHistory": "Chat History"
   },
   "home": {
@@ -78,5 +79,11 @@
     "signUp": "Sign Up",
     "signIn": "Sign In",
     "logout": "Logout"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "description": "Get in touch with our team members",
+    "teamMember": "Team Member",  
+    "footer": "Feel free to reach out to us for any queries or support!"
   }
 }
