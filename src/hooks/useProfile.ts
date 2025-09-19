@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 type Profile = {
   id: string;
+  user_id: string;
   full_name: string | null;
   username: string | null;
   avatar_url: string | null;
@@ -22,8 +23,8 @@ export function useProfile(userId: string | null | undefined) {
       if (!userId) return null;
       const { data, error } = await supabase
         .from("profiles")
-        .select("id, full_name, username, avatar_url, age, gender, created_at, updated_at")
-        .eq("id", userId)
+        .select("id, user_id, full_name, username, avatar_url, age, gender, created_at, updated_at")
+        .eq("user_id", userId)
         .maybeSingle();
       if (error) throw error;
       return data as Profile | null;
@@ -38,7 +39,7 @@ export function useProfile(userId: string | null | undefined) {
       const { error } = await supabase
         .from("profiles")
         .update({ ...updates, updated_at: new Date().toISOString() })
-        .eq("id", userId);
+        .eq("user_id", userId);
       if (error) throw error;
       await queryClient.invalidateQueries({ queryKey: ["profile", userId] });
     },

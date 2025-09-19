@@ -9,6 +9,7 @@ import { Calendar } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { format, parseISO } from "date-fns";
+import { useAuth } from "@/hooks/useAuth";
 
 // Helper to generate ARIA labels and tooltips
 const accessible = {
@@ -117,6 +118,7 @@ const LifestyleHistory: React.FC<{
 );
 
 const LifestylePage: React.FC = () => {
+  const { user } = useAuth();
   const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm<LifestyleFormData>({
     defaultValues: {
       date: format(new Date(), "yyyy-MM-dd"),
@@ -139,10 +141,16 @@ const LifestylePage: React.FC = () => {
 
   // Fetch lifestyle data from Supabase
   async function loadEntries() {
+    if (!user) {
+      setEntries([]);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     const { data, error } = await supabase
       .from("lifestyle_data")
       .select("*")
+      .eq("user_id", user.id)
       .order("date", { ascending: false });
     if (error) {
       toast({ title: "Error", description: "Could not load lifestyle data." });
@@ -155,21 +163,32 @@ const LifestylePage: React.FC = () => {
 
   // Stub: Fetch blood reports from Supabase (simulate for prototype)
   async function loadBloodReports() {
+    if (!user) {
+      setBloodReports([]);
+      return;
+    }
     // You can replace this select with real columns in your blood report table later.
     const { data, error } = await supabase
       .from("blood_reports")
       .select("date, blood_pressure, cholesterol")
+      .eq("user_id", user.id)
       .order("date", { ascending: true });
     setBloodReports(data || []);
   }
 
   useEffect(() => {
-    loadEntries();
-    loadBloodReports();
-  }, []);
+    if (user) {
+      loadEntries();
+      loadBloodReports();
+    }
+  }, [user]);
 
   // On submit, save/update to Supabase
   const onSubmit = async (form: LifestyleFormData) => {
+    if (!user) {
+      toast({ title: "Error", description: "Please log in to save data." });
+      return;
+    }
     // Validation
     const steps = parseInt(form.steps, 10);
     const water = parseFloat(form.water_intake);
@@ -188,6 +207,7 @@ const LifestylePage: React.FC = () => {
     }
     // Insert or update
     const payload = {
+      user_id: user.id,
       date: form.date,
       steps,
       water_intake: water,

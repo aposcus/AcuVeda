@@ -14,7 +14,126 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      blood_reports: {
+        Row: {
+          blood_pressure: number | null
+          cholesterol: number | null
+          created_at: string
+          date: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          blood_pressure?: number | null
+          cholesterol?: number | null
+          created_at?: string
+          date: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          blood_pressure?: number | null
+          cholesterol?: number | null
+          created_at?: string
+          date?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      chat_logs: {
+        Row: {
+          chatbot_response: string
+          id: string
+          timestamp: string
+          user_id: string
+          user_question: string
+        }
+        Insert: {
+          chatbot_response: string
+          id?: string
+          timestamp?: string
+          user_id: string
+          user_question: string
+        }
+        Update: {
+          chatbot_response?: string
+          id?: string
+          timestamp?: string
+          user_id?: string
+          user_question?: string
+        }
+        Relationships: []
+      }
+      lifestyle_data: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          sleep_hours: number | null
+          source: string | null
+          steps: number | null
+          user_id: string | null
+          water_intake: number | null
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: string
+          sleep_hours?: number | null
+          source?: string | null
+          steps?: number | null
+          user_id?: string | null
+          water_intake?: number | null
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          sleep_hours?: number | null
+          source?: string | null
+          steps?: number | null
+          user_id?: string | null
+          water_intake?: number | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          age: number | null
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          gender: string | null
+          id: string
+          updated_at: string
+          user_id: string
+          username: string | null
+        }
+        Insert: {
+          age?: number | null
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          gender?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+          username?: string | null
+        }
+        Update: {
+          age?: number | null
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          gender?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
