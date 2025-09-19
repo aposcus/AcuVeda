@@ -36,14 +36,35 @@ export function useAuth() {
    * Signs up with email, password and full name
    */
   const signUpWithEmail = async (email: string, password: string, fullName?: string) => {
-    return supabase.auth.signUp({
+    const redirectUrl = `${window.location.origin}/`;
+    
+    const result = await supabase.auth.signUp({
       email,
       password,
       options: {
+        emailRedirectTo: redirectUrl,
         // full_name is added as user_metadata, used in trigger to create profiles row
         data: fullName ? { full_name: fullName } : {},
       },
     });
+
+    // Send custom confirmation email
+    if (result.data.user && !result.error) {
+      try {
+        await supabase.functions.invoke("send-confirmation-email", {
+          body: {
+            email: email,
+            token: result.data.user.id,
+            type: "signup",
+            redirect_to: redirectUrl
+          }
+        });
+      } catch (emailError) {
+        console.error("Failed to send confirmation email:", emailError);
+      }
+    }
+
+    return result;
   };
 
   const signInWithEmail = async (email: string, password: string) => {
