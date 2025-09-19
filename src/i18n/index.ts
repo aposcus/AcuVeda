@@ -5,19 +5,19 @@ import Backend from 'i18next-http-backend';
 
 // Translation resources
 import en from './locales/en.json';
-import es from './locales/es.json';
-import fr from './locales/fr.json';
 import hi from './locales/hi.json';
-import ar from './locales/ar.json';
-import zh from './locales/zh.json';
+import bn from './locales/bn.json';
+import ta from './locales/ta.json';
+import te from './locales/te.json';
+import mr from './locales/mr.json';
 
 const resources = {
   en: { translation: en },
-  es: { translation: es },
-  fr: { translation: fr },
   hi: { translation: hi },
-  ar: { translation: ar },
-  zh: { translation: zh },
+  bn: { translation: bn },
+  ta: { translation: ta },
+  te: { translation: te },
+  mr: { translation: mr },
 };
 
 i18n
