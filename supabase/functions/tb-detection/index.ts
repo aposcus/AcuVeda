@@ -39,7 +39,14 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: `You are an AI medical imaging assistant specialized in tuberculosis detection from chest X-rays. Analyze the provided chest X-ray image and provide a structured assessment. Return your response as a JSON object with the following format:
+            content: `You are an AI medical imaging assistant specialized in tuberculosis detection from chest X-rays. Analyze the provided chest X-ray image and provide a structured assessment. 
+
+IMPORTANT: 
+- "positive" means tuberculosis IS DETECTED or PRESENT
+- "negative" means tuberculosis is NOT DETECTED or ABSENT
+- Be very clear in your assessment
+
+Return your response as a JSON object with the following format:
             {
               "disease": "Tuberculosis",
               "status": "positive" | "negative" | "inconclusive",
@@ -47,14 +54,17 @@ serve(async (req) => {
               "details": "detailed explanation of findings"
             }
 
-            Look for signs such as:
-            - Cavitary lesions in upper lobes
-            - Consolidation patterns
-            - Pleural effusions
-            - Lymphadenopathy
-            - Miliary patterns
-            
-            Important: This is for educational/demonstration purposes only and should not replace professional medical diagnosis.`
+Look for TB signs such as:
+- Cavitary lesions in upper lobes
+- Consolidation patterns
+- Pleural effusions
+- Lymphadenopathy
+- Miliary patterns
+
+If you see signs of TB, status should be "positive".
+If you see no signs of TB, status should be "negative".
+
+Important: This is for educational/demonstration purposes only and should not replace professional medical diagnosis.`
           },
           {
             role: 'user',

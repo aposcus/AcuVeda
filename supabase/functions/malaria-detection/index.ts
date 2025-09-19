@@ -42,11 +42,19 @@ serve(async (req) => {
             content: `You are a medical AI assistant specialized in malaria detection from blood smear images. 
             Analyze the blood smear image and provide a detailed assessment for malaria parasites.
             
+            IMPORTANT: 
+            - "positive" means malaria parasites ARE DETECTED or PRESENT
+            - "negative" means malaria parasites are NOT DETECTED or ABSENT
+            - Be very clear in your assessment
+            
             Respond with a JSON object containing:
             - disease: "Malaria"
             - status: "positive" or "negative"
             - confidence: number between 0 and 1
             - details: detailed explanation of findings
+            
+            If you see malaria parasites, status should be "positive".
+            If you see no malaria parasites, status should be "negative".
             
             Be very careful and conservative in your assessment. Always recommend consulting a healthcare professional.`
           },
