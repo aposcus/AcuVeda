@@ -91,21 +91,34 @@ serve(async (req) => {
     }
 
     let analysisResult;
+    const responseContent = data.choices[0].message.content;
+    console.log('Raw OpenAI response:', responseContent);
+    
     try {
       // Try to parse as JSON first
-      analysisResult = JSON.parse(data.choices[0].message.content);
+      analysisResult = JSON.parse(responseContent);
+      console.log('Parsed JSON result:', analysisResult);
     } catch (parseError) {
       console.log('Failed to parse as JSON, using fallback parsing');
       // Fallback: extract information from text response
-      const content = data.choices[0].message.content;
-      const status = content.toLowerCase().includes('positive') ? 'positive' : 
-                   content.toLowerCase().includes('negative') ? 'negative' : 'inconclusive';
+      const content = responseContent.toLowerCase();
+      console.log('Content for analysis:', content);
+      
+      // More robust status detection
+      let status = 'inconclusive';
+      if (content.includes('tuberculosis detected') || content.includes('positive') || content.includes('tb detected')) {
+        status = 'positive';
+      } else if (content.includes('no tuberculosis') || content.includes('negative') || content.includes('not detected')) {
+        status = 'negative';
+      }
+      
+      console.log('Determined status:', status);
       
       analysisResult = {
         disease: 'Tuberculosis',
         status: status,
         confidence: 0.75,
-        details: content
+        details: responseContent
       };
     }
 

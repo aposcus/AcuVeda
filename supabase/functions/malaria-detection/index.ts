@@ -81,19 +81,34 @@ serve(async (req) => {
     console.log('OpenAI response received');
 
     let analysisResult;
+    const responseContent = data.choices[0].message.content;
+    console.log('Raw OpenAI response:', responseContent);
+    
     try {
       // Try to parse the JSON response from the AI
-      const content = data.choices[0].message.content;
-      analysisResult = JSON.parse(content);
+      analysisResult = JSON.parse(responseContent);
+      console.log('Parsed JSON result:', analysisResult);
     } catch (parseError) {
       console.error('Failed to parse AI response as JSON:', parseError);
       // Fallback: create a structured response from the text
-      const content = data.choices[0].message.content;
+      const content = responseContent.toLowerCase();
+      console.log('Content for analysis:', content);
+      
+      // More robust status detection
+      let status = 'negative';
+      if (content.includes('malaria detected') || content.includes('positive') || content.includes('parasites detected') || content.includes('plasmodium')) {
+        status = 'positive';
+      } else if (content.includes('no malaria') || content.includes('negative') || content.includes('not detected') || content.includes('no parasites')) {
+        status = 'negative';
+      }
+      
+      console.log('Determined status:', status);
+      
       analysisResult = {
         disease: 'Malaria',
-        status: content.toLowerCase().includes('positive') ? 'positive' : 'negative',
+        status: status,
         confidence: 0.8,
-        details: content
+        details: responseContent
       };
     }
 
