@@ -1,7 +1,9 @@
 
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Logo from './Logo';
+import LanguageSwitcher from './LanguageSwitcher';
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { Button } from './ui/button';
 import { User, LogIn, LogOut } from 'lucide-react';
@@ -10,6 +12,7 @@ import { useAuth } from "@/hooks/useAuth";
 const Navbar = () => {
   const { user, loading, signOut } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleProfile = () => {
     navigate("/profile");
@@ -32,56 +35,55 @@ const Navbar = () => {
             <NavigationMenuItem>
               <Link to="/">
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Home
+                  {t('nav.home')}
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link to="/checkup">
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Check-up
+                  {t('nav.checkup')}
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link to="/features">
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Features
+                  {t('nav.features')}
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link to="/about">
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  About Us
+                  {t('nav.about')}
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
-            {/* ADDED HEALTH GOAL TRACKING */}
             <NavigationMenuItem>
               <Link to="/health-goals">
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Health Goal Tracking
+                  {t('nav.healthGoals')}
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
-            {/* LIFESTYLE DATA FEATURE */}
             <NavigationMenuItem>
               <Link to="/lifestyle">
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Lifestyle
+                  {t('nav.lifestyle')}
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
+          <LanguageSwitcher />
           {user ? (
             <>
               <Button variant="outline" className="flex items-center gap-2" onClick={handleProfile}>
                 <User size={18} />
-                My Profile
+                {t('nav.profile')}
               </Button>
               <Button
                 variant="outline"
@@ -89,14 +91,14 @@ const Navbar = () => {
                 onClick={handleLogout}
               >
                 <LogOut size={18} />
-                Log out
+                {t('auth.logout')}
               </Button>
             </>
           ) : (
             <Link to="/login">
               <Button className="flex items-center gap-2 bg-acuveda-blue hover:bg-acuveda-blue/90">
                 <LogIn size={18} />
-                Login
+                {t('auth.login')}
               </Button>
             </Link>
           )}

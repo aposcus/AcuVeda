@@ -1,0 +1,82 @@
+{
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "checkup": "Check-up",
+    "features": "Features",
+    "about": "About",
+    "login": "Login",
+    "profile": "Profile",
+    "healthGoals": "Health Goals",
+    "lifestyle": "Lifestyle",
+    "chatHistory": "Chat History"
+  },
+  "home": {
+    "title": "AI-Powered Health Analysis for Everyone",
+    "subtitle": "Get instant insights from your medical images and health data using advanced artificial intelligence",
+    "startCheckup": "Start Check-up",
+    "learnMore": "Learn More",
+    "featuresTitle": "How Our AI Analysis Works",
+    "tbTitle": "TB & Pneumonia Detection",
+    "tbDescription": "Our AI model analyzes chest X-rays to detect signs of tuberculosis and pneumonia with high accuracy. The algorithm examines lung tissue patterns, identifying:",
+    "malariaTitle": "Malaria Detection",
+    "malariaDescription": "Our malaria detection system examines blood smear images to identify the presence of Plasmodium parasites with precision. The system looks for:",
+    "ctaTitle": "Ready to experience AI-powered health analysis?",
+    "ctaDscription": "Take the first step towards better health monitoring with our cutting-edge technology.",
+    "getStarted": "Start Your Check-up"
+  },
+  "checkup": {
+    "title": "AI-Powered Health Check-ups",
+    "subtitle": "Upload your medical images and get instant AI analysis for various health conditions",
+    "tbScan": "TB & Pneumonia Scan",
+    "tbDescription": "Upload chest X-ray images for tuberculosis and pneumonia detection",
+    "malariaScan": "Malaria Detection",
+    "malariaDescription": "Analyze blood smear images for malaria parasite identification",
+    "recordAnalysis": "Quick Medical Record Analysis", 
+    "recordDescription": "Get AI insights from your medical reports and lab results"
+  },
+  "features": {
+    "title": "Advanced AI Health Features",
+    "subtitle": "Discover our comprehensive suite of AI-powered health analysis tools",
+    "tbDetection": "TB & Pneumonia Detection",
+    "malariaDetection": "Malaria Detection",
+    "recordAnalysis": "Medical Record Analysis"
+  },
+  "about": {
+    "title": "About AcuVeda",
+    "mission": "Bridging Healthcare Gaps with AI",
+    "healthcareGap": "The Healthcare Gap",
+    "tbBurden": "The Burden of TB and Malaria",
+    "solution": "Our AI-Powered Solution",
+    "vision": "Our Vision"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "upload": "Upload",
+    "download": "Download",
+    "language": "Language"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "signUp": "Sign Up",
+    "signIn": "Sign In",
+    "logout": "Logout"
+  }
+}

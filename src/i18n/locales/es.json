@@ -1,0 +1,82 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "dashboard": "Panel",
+    "checkup": "Revisión",
+    "features": "Características",
+    "about": "Acerca de",
+    "login": "Iniciar Sesión",
+    "profile": "Perfil",
+    "healthGoals": "Objetivos de Salud",
+    "lifestyle": "Estilo de Vida",
+    "chatHistory": "Historial de Chat"
+  },
+  "home": {
+    "title": "Análisis de Salud con IA para Todos",
+    "subtitle": "Obtenga información instantánea de sus imágenes médicas y datos de salud utilizando inteligencia artificial avanzada",
+    "startCheckup": "Comenzar Revisión",
+    "learnMore": "Saber Más",
+    "featuresTitle": "Cómo Funciona Nuestro Análisis de IA",
+    "tbTitle": "Detección de TB y Neumonía",
+    "tbDescription": "Nuestro modelo de IA analiza radiografías de tórax para detectar signos de tuberculosis y neumonía con alta precisión. El algoritmo examina patrones de tejido pulmonar, identificando:",
+    "malariaTitle": "Detección de Malaria",
+    "malariaDescription": "Nuestro sistema de detección de malaria examina imágenes de frotis de sangre para identificar la presencia de parásitos de Plasmodium con precisión. El sistema busca:",
+    "ctaTitle": "¿Listo para experimentar el análisis de salud con IA?",
+    "ctaDscription": "Da el primer paso hacia un mejor monitoreo de la salud con nuestra tecnología de vanguardia.",
+    "getStarted": "Comienza tu Revisión"
+  },
+  "checkup": {
+    "title": "Revisiones de Salud con IA",
+    "subtitle": "Suba sus imágenes médicas y obtenga análisis instantáneo de IA para varias condiciones de salud",
+    "tbScan": "Escaneo de TB y Neumonía",
+    "tbDescription": "Suba imágenes de radiografías de tórax para detección de tuberculosis y neumonía",
+    "malariaScan": "Detección de Malaria",
+    "malariaDescription": "Analice imágenes de frotis de sangre para identificación de parásitos de malaria",
+    "recordAnalysis": "Análisis Rápido de Registros Médicos",
+    "recordDescription": "Obtenga información de IA de sus informes médicos y resultados de laboratorio"
+  },
+  "features": {
+    "title": "Características Avanzadas de Salud con IA",
+    "subtitle": "Descubra nuestra suite completa de herramientas de análisis de salud con IA",
+    "tbDetection": "Detección de TB y Neumonía",
+    "malariaDetection": "Detección de Malaria",
+    "recordAnalysis": "Análisis de Registros Médicos"
+  },
+  "about": {
+    "title": "Acerca de AcuVeda",
+    "mission": "Cerrando Brechas de Atención Médica con IA",
+    "healthcareGap": "La Brecha de Atención Médica",
+    "tbBurden": "La Carga de TB y Malaria",
+    "solution": "Nuestra Solución con IA",
+    "vision": "Nuestra Visión"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "upload": "Subir",
+    "download": "Descargar",
+    "language": "Idioma"
+  },
+  "auth": {
+    "login": "Iniciar Sesión",
+    "register": "Registrarse",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "forgotPassword": "¿Olvidó su Contraseña?",
+    "dontHaveAccount": "¿No tiene una cuenta?",
+    "alreadyHaveAccount": "¿Ya tiene una cuenta?",
+    "signUp": "Registrarse",
+    "signIn": "Iniciar Sesión",
+    "logout": "Cerrar Sesión"
+  }
+}

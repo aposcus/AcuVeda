@@ -1,0 +1,82 @@
+{
+  "nav": {
+    "home": "首页",
+    "dashboard": "仪表板",
+    "checkup": "体检",
+    "features": "功能",
+    "about": "关于",
+    "login": "登录",
+    "profile": "个人资料",
+    "healthGoals": "健康目标",
+    "lifestyle": "生活方式",
+    "chatHistory": "聊天记录"
+  },
+  "home": {
+    "title": "AI驱动的健康分析",
+    "subtitle": "使用先进的人工智能从您的医学影像和健康数据中获得即时洞察",
+    "startCheckup": "开始体检",
+    "learnMore": "了解更多",
+    "featuresTitle": "先进的AI健康分析",
+    "tbTitle": "结核病和肺炎检测",
+    "tbDescription": "我们的AI分析胸部X光片，高精度检测结核病和肺炎的征象。",
+    "malariaTitle": "疟疾检测",
+    "malariaDescription": "上传血涂片图像进行疟疾寄生虫的即时检测和分类。",
+    "ctaTitle": "准备开始您的健康体检了吗？",
+    "ctaDscription": "今天就开始您的AI驱动健康分析，获得即时洞察。",
+    "getStarted": "开始"
+  },
+  "checkup": {
+    "title": "AI驱动的健康体检",
+    "subtitle": "上传您的医学影像，获得各种健康状况的即时AI分析",
+    "tbScan": "结核病和肺炎扫描",
+    "tbDescription": "上传胸部X光图像进行结核病和肺炎检测",
+    "malariaScan": "疟疾检测",
+    "malariaDescription": "分析血涂片图像进行疟疾寄生虫识别",
+    "recordAnalysis": "快速医疗记录分析",
+    "recordDescription": "从您的医疗报告和实验室结果中获得AI洞察"
+  },
+  "features": {
+    "title": "先进的AI健康功能",
+    "subtitle": "发现我们全面的AI驱动健康分析工具套件",
+    "tbDetection": "结核病和肺炎检测",
+    "malariaDetection": "疟疾检测",
+    "recordAnalysis": "医疗记录分析"
+  },
+  "about": {
+    "title": "关于AcuVeda",
+    "mission": "用AI弥合医疗保健差距",
+    "healthcareGap": "医疗保健差距",
+    "tbBurden": "结核病和疟疾的负担",
+    "solution": "我们的AI驱动解决方案",
+    "vision": "我们的愿景"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "close": "关闭",
+    "back": "返回",
+    "next": "下一个",
+    "previous": "上一个",
+    "upload": "上传",
+    "download": "下载",
+    "language": "语言"
+  },
+  "auth": {
+    "login": "登录",
+    "register": "注册",
+    "email": "电子邮件",
+    "password": "密码",
+    "confirmPassword": "确认密码",
+    "forgotPassword": "忘记密码？",
+    "dontHaveAccount": "没有账户？",
+    "alreadyHaveAccount": "已有账户？",
+    "signUp": "注册",
+    "signIn": "登录",
+    "logout": "退出"
+  }
+}

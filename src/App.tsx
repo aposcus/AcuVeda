@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "@/components/Navbar";
+import LanguageProvider from "@/components/LanguageProvider";
 import Home from "./pages/Home";
 import CheckupPage from "./pages/CheckupPage";
 import FeaturesPage from "./pages/FeaturesPage";
@@ -21,31 +22,33 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <div className="flex flex-col min-h-screen">
-          <Navbar />
-          <div className="flex-1">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/dashboard" element={<Index />} />
-              <Route path="/checkup" element={<CheckupPage />} />
-              <Route path="/features" element={<FeaturesPage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/health-goals" element={<HealthGoalsPage />} />
-              <Route path="/lifestyle" element={<LifestylePage />} />
-              <Route path="/dashboard/chat-history" element={<ChatHistoryPage />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+    <LanguageProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            <div className="flex-1">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/dashboard" element={<Index />} />
+                <Route path="/checkup" element={<CheckupPage />} />
+                <Route path="/features" element={<FeaturesPage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/health-goals" element={<HealthGoalsPage />} />
+                <Route path="/lifestyle" element={<LifestylePage />} />
+                <Route path="/dashboard/chat-history" element={<ChatHistoryPage />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </div>
+            <ChatbotWidget />
           </div>
-          <ChatbotWidget />
-        </div>
-      </BrowserRouter>
-    </TooltipProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </LanguageProvider>
   </QueryClientProvider>
 );
 

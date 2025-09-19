@@ -1,31 +1,33 @@
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 
 const Home = () => {
+  const { t } = useTranslation();
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-acuveda-light">
       <section className="container py-16 px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-800 leading-tight">
-              AI-Powered Health Analysis for <span className="text-acuveda-blue">Everyone</span>
+              {t('home.title')}
             </h1>
             <p className="text-lg text-gray-600">
-              AcuVeda uses advanced AI technology to detect diseases from medical images and records, 
-              making healthcare accessible even in remote areas.
+              {t('home.subtitle')}
             </p>
             <div className="flex gap-4">
               <Link to="/checkup">
                 <Button size="lg" className="bg-acuveda-blue hover:bg-acuveda-blue/90">
-                  Start Check-up
+                  {t('home.startCheckup')}
                 </Button>
               </Link>
               <Link to="/features">
                 <Button size="lg" variant="outline">
-                  Learn More
+                  {t('home.learnMore')}
                 </Button>
               </Link>
             </div>
@@ -42,7 +44,7 @@ const Home = () => {
 
       <section className="py-16 bg-white">
         <div className="container px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">How Our AI Analysis Works</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">{t('home.featuresTitle')}</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div className="order-2 md:order-1">
@@ -53,10 +55,9 @@ const Home = () => {
               />
             </div>
             <div className="space-y-4 order-1 md:order-2">
-              <h3 className="text-2xl font-bold text-acuveda-blue">TB & Pneumonia Detection</h3>
+              <h3 className="text-2xl font-bold text-acuveda-blue">{t('home.tbTitle')}</h3>
               <p className="text-gray-700">
-                Our AI model analyzes chest X-rays to detect signs of tuberculosis and pneumonia with 
-                high accuracy. The algorithm examines lung tissue patterns, identifying:
+                {t('home.tbDescription')}
               </p>
               <ul className="list-disc pl-5 space-y-2 text-gray-700">
                 <li>Opacities and consolidation in lung tissue</li>
@@ -69,10 +70,9 @@ const Home = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mt-16">
             <div className="space-y-4">
-              <h3 className="text-2xl font-bold text-acuveda-blue">Malaria Detection</h3>
+              <h3 className="text-2xl font-bold text-acuveda-blue">{t('home.malariaTitle')}</h3>
               <p className="text-gray-700">
-                Our malaria detection system examines blood smear images to identify the presence of 
-                Plasmodium parasites with precision. The system looks for:
+                {t('home.malariaDescription')}
               </p>
               <ul className="list-disc pl-5 space-y-2 text-gray-700">
                 <li>Infected red blood cells (erythrocytes)</li>
@@ -94,13 +94,13 @@ const Home = () => {
       
       <section className="py-16 bg-acuveda-light">
         <div className="container px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to experience AI-powered health analysis?</h2>
+          <h2 className="text-3xl font-bold mb-6">{t('home.ctaTitle')}</h2>
           <p className="text-lg text-gray-700 mb-8 max-w-3xl mx-auto">
-            Take the first step towards better health monitoring with our cutting-edge technology.
+            {t('home.ctaDscription')}
           </p>
           <Link to="/checkup">
             <Button size="lg" className="bg-acuveda-blue hover:bg-acuveda-blue/90">
-              Start Your Check-up
+              {t('home.getStarted')}
             </Button>
           </Link>
         </div>

@@ -1,0 +1,82 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "dashboard": "Tableau de Bord",
+    "checkup": "Bilan",
+    "features": "Fonctionnalités",
+    "about": "À Propos",
+    "login": "Connexion",
+    "profile": "Profil",
+    "healthGoals": "Objectifs Santé",
+    "lifestyle": "Mode de Vie",
+    "chatHistory": "Historique Chat"
+  },
+  "home": {
+    "title": "Analyse de Santé par IA pour Tous",
+    "subtitle": "Obtenez des insights instantanés de vos images médicales et données de santé en utilisant l'intelligence artificielle avancée",
+    "startCheckup": "Commencer le Bilan",
+    "learnMore": "En Savoir Plus",
+    "featuresTitle": "Comment Fonctionne Notre Analyse IA",
+    "tbTitle": "Détection TB & Pneumonie",
+    "tbDescription": "Notre modèle IA analyse les radiographies thoraciques pour détecter les signes de tuberculose et pneumonie avec haute précision. L'algorithme examine les motifs de tissus pulmonaires, identifiant:",
+    "malariaTitle": "Détection du Paludisme",
+    "malariaDescription": "Notre système de détection du paludisme examine les images de frottis sanguin pour identifier la présence de parasites du paludisme avec précision. Le système recherche:",
+    "ctaTitle": "Prêt à expérimenter l'analyse de santé par IA?",
+    "ctaDscription": "Faites le premier pas vers un meilleur suivi de santé avec notre technologie de pointe.",
+    "getStarted": "Commencez Votre Bilan"
+  },
+  "checkup": {
+    "title": "Bilans de Santé par IA",
+    "subtitle": "Téléchargez vos images médicales et obtenez une analyse IA instantanée pour diverses conditions de santé",
+    "tbScan": "Scan TB & Pneumonie",
+    "tbDescription": "Téléchargez des radiographies thoraciques pour détection de tuberculose et pneumonie",
+    "malariaScan": "Détection du Paludisme",
+    "malariaDescription": "Analysez des images de frottis sanguin pour identification des parasites du paludisme",
+    "recordAnalysis": "Analyse Rapide des Dossiers Médicaux",
+    "recordDescription": "Obtenez des insights IA de vos rapports médicaux et résultats de laboratoire"
+  },
+  "features": {
+    "title": "Fonctionnalités Santé IA Avancées",
+    "subtitle": "Découvrez notre suite complète d'outils d'analyse de santé par IA",
+    "tbDetection": "Détection TB & Pneumonie",
+    "malariaDetection": "Détection du Paludisme",
+    "recordAnalysis": "Analyse des Dossiers Médicaux"
+  },
+  "about": {
+    "title": "À Propos d'AcuVeda",
+    "mission": "Combler les Lacunes de Santé avec l'IA",
+    "healthcareGap": "L'Écart des Soins de Santé",
+    "tbBurden": "Le Fardeau de la TB et du Paludisme",
+    "solution": "Notre Solution par IA",
+    "vision": "Notre Vision"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "save": "Sauvegarder",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "upload": "Télécharger",
+    "download": "Télécharger",
+    "language": "Langue"
+  },
+  "auth": {
+    "login": "Connexion",
+    "register": "S'inscrire",
+    "email": "Email",
+    "password": "Mot de Passe",
+    "confirmPassword": "Confirmer Mot de Passe",
+    "forgotPassword": "Mot de Passe Oublié?",
+    "dontHaveAccount": "Pas de compte?",
+    "alreadyHaveAccount": "Déjà un compte?",
+    "signUp": "S'inscrire",
+    "signIn": "Se Connecter",
+    "logout": "Déconnexion"
+  }
+}
