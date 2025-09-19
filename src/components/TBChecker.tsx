@@ -1,6 +1,8 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import FileUploader from './FileUploader';
 import AnalysisResult from './AnalysisResult';
 
@@ -9,8 +11,9 @@ const TBChecker: React.FC = () => {
   const [analyzing, setAnalyzing] = useState(false);
   const [result, setResult] = useState<any | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const { toast } = useToast();
 
-  const handleFileSelect = (selectedFile: File) => {
+  const handleFileSelect = async (selectedFile: File) => {
     setFile(selectedFile);
     
     // Create a preview URL for the image
@@ -20,22 +23,60 @@ const TBChecker: React.FC = () => {
     // Reset previous results
     setResult(null);
     
-    // Simulate analysis process
+    // Start analysis
     setAnalyzing(true);
-    setTimeout(() => {
-      // In a real app, this would be an API call to a TB detection model
-      const mockResult = {
-        disease: 'Tuberculosis',
-        status: Math.random() > 0.5 ? 'positive' : 'negative',
-        confidence: 0.75 + Math.random() * 0.2,
-        details: Math.random() > 0.5 
-          ? 'Abnormal opacities detected in upper right lobe, consistent with tuberculosis infection.'
-          : 'No significant abnormalities detected in the chest X-ray.',
+    
+    try {
+      // Convert file to base64 for the API
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const base64 = e.target?.result as string;
+        
+        try {
+          const { data, error } = await supabase.functions.invoke('tb-detection', {
+            body: { imageUrl: base64 }
+          });
+
+          if (error) {
+            console.error('Supabase function error:', error);
+            throw new Error(error.message || 'Analysis failed');
+          }
+
+          setResult(data);
+          toast({
+            title: "Analysis Complete",
+            description: "Your chest X-ray has been analyzed.",
+          });
+        } catch (error) {
+          console.error('Analysis error:', error);
+          toast({
+            title: "Analysis Failed",
+            description: "Please try again or consult a healthcare professional.",
+            variant: "destructive"
+          });
+          
+          // Show error result
+          setResult({
+            disease: 'Tuberculosis',
+            status: 'error',
+            confidence: 0,
+            details: 'Analysis failed. Please try again with a clearer image or consult a healthcare professional.'
+          });
+        } finally {
+          setAnalyzing(false);
+        }
       };
       
-      setResult(mockResult);
+      reader.readAsDataURL(selectedFile);
+    } catch (error) {
+      console.error('File reading error:', error);
       setAnalyzing(false);
-    }, 3000);
+      toast({
+        title: "File Error",
+        description: "Could not read the uploaded file.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleDownload = () => {
@@ -74,7 +115,7 @@ const TBChecker: React.FC = () => {
       {analyzing && (
         <div className="py-8 text-center">
           <div className="w-16 h-16 border-t-4 border-acuveda-blue rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-lg font-medium">Analyzing your X-Ray...</p>
+          <p className="text-lg font-medium">Analyzing chest X-ray for tuberculosis...</p>
           <p className="text-sm text-gray-500">This may take a few moments</p>
         </div>
       )}

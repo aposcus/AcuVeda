@@ -26,3 +26,6 @@ verify_jwt = false
 
 [functions.malaria-detection]
 verify_jwt = false
+
+[functions.tb-detection]
+verify_jwt = false
